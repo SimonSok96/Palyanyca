@@ -19,7 +19,7 @@ class Article(models.Model):
         null= True
     )
     title = models.CharField(verbose_name= 'Заголовок', max_length=255)
-    text_previev = models.TextField(verbose_name= 'Текст-превью')
+    text_preview = models.TextField(verbose_name= 'Текст-превью')
     text = models.TextField(verbose_name= 'Текст')
     created_ad = models.DateTimeField(verbose_name= 'Дата создания', auto_now_add= True)
     updatet_at = models.DateTimeField(verbose_name= 'Дата редактирования', auto_now_add= True)
