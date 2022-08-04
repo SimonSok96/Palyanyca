@@ -5,7 +5,7 @@
     <div class="row">
         {% for article in articles %}
             <div class="col-4 blog-item">
-                <a href="{% url 'article_view' article_id=article.id category_id=article.category.id %}">{{ article.title }}</a>
+                <a href="{% url 'article_view' article_id=article.id category_id=article.category.id %}">
                 {% if article.image %}
                     <img class="img-thumbnail" src="{{ article.image_thumbnail.url }}" alt="">
                 {% else %}
