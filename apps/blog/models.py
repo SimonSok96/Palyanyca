@@ -1,6 +1,9 @@
 from django.db import models
-from imagekit.models import ProcessedImageField,ImageSpecField
+from django.utils.safestring import mark_safe
+from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFill
+from config.settings import MEDIA_ROOT
+
 
 class BlogCategory(models.Model):
     name = models.CharField(verbose_name= 'Название', max_length= 255)
@@ -13,6 +16,21 @@ class BlogCategory(models.Model):
         options={'quality': 100},
         null=True
     )
+
+    def image_teg_thumbnail(self):
+        if self.image:
+            return mark_safe(f"<img src='/{MEDIA_ROOT}{self.image}' width='70'>")
+
+    image_teg_thumbnail.short_description = 'Текущее изображение'
+    image_teg_thumbnail.allow_tags = True
+
+
+    def image_teg(self):
+        if self.image:
+            return mark_safe(f"<img src='/{MEDIA_ROOT}{self.image}'>")
+
+    image_teg.short_description = 'Текущее изображение'
+    image_teg.allow_tags = True
 
 
     def __str__(self):
@@ -59,8 +77,29 @@ class Article(models.Model):
     title = models.CharField(verbose_name= 'Заголовок', max_length=255)
     text_preview = models.TextField(verbose_name= 'Текст-превью')
     text = models.TextField(verbose_name= 'Текст')
-    created_ad = models.DateTimeField(verbose_name= 'Дата создания', auto_now_add= True)
-    updatet_at = models.DateTimeField(verbose_name= 'Дата редактирования', auto_now_add= True)
+    created_at = models.DateTimeField(verbose_name= 'Дата создания', auto_now_add= True)
+    updated_at = models.DateTimeField(verbose_name= 'Дата редактирования', auto_now_add= True)
+
+
+    def image_teg_thumbnail(self):
+        if self.image:
+            if not self.image_thumbnail:
+                Article.objects.get(id=self.id)
+            return mark_safe(f"<img src='/{MEDIA_ROOT}{self.image_thumbnail}' width='70'>")
+
+    image_teg_thumbnail.short_description = 'Текущее изображение'
+    image_teg_thumbnail.allow_tags = True
+
+
+    def image_teg(self):
+        if self.image:
+            if not self.image_thumbnail:
+                Article.objects.get(id=self.id)
+            return mark_safe(f"<img src='/{MEDIA_ROOT}{self.image_thumbnail}'>")
+
+    image_teg.short_description = 'Текущее изображение'
+    image_teg.allow_tags = True
+
 
     def __str__(self):
         return self.title
