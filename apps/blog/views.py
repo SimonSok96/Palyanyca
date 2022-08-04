@@ -16,3 +16,9 @@ def article_view(request, category_id, article_id):
     article = Article.objects.get(id=article_id)
     category = BlogCategory.objects.get(id=category_id)
     return render(request, 'blog/article/view.html', {'article': article, 'category': category})
+
+
+def teg_search_article_list(request, teg_id):
+    teg = Teg.objects.get(id=teg_id)
+    articles = Article.objects.filter(tegs__in=[teg_id])
+    return render(request, 'blog/article/teg_search.html', {'articles': articles})
