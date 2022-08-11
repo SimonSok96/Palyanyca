@@ -30,7 +30,7 @@ class BlogCategoryAdmin(admin.ModelAdmin):
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'image_teg_thumbnail', 'category_link', 'created_at']
     list_display_links = ['id', 'title', 'image_teg_thumbnail']
-    fields = ['category', 'image_teg', 'image', 'tegs', 'title', 'text_preview', 'text']
+    fields = ['category', 'image_teg', 'image', 'tegs', 'title', 'text_preview', 'text', 'user']
     readonly_fields = ['image_teg']
     list_filter = ['category', 'tegs']
 
