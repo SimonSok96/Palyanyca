@@ -58,7 +58,6 @@ class Category(MPTTModel):
     def get_absolute_url(self):
         return reverse('category', args=[self.slug])
 
-
 class Product(models.Model):
     name = models.CharField(verbose_name='Название', max_length=255)
     description = models.TextField(verbose_name='Описание', blank=True, null=True)
@@ -102,7 +101,3 @@ class ProductCategory(models.Model):
     class Meta:
         verbose_name = 'Категория товара'
         verbose_name_plural = 'Категория товара'
-
-
-
-

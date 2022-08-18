@@ -1,5 +1,7 @@
 from django.views import generic
+
 from apps.catalog.models import Category, Product
+
 
 
 class CatalogIndexView(generic.ListView):
@@ -8,6 +10,7 @@ class CatalogIndexView(generic.ListView):
 
     def get_queryset(self):
         return Category.objects.filter(parent=None)
+
 
 
 class ProductByCategoryView(generic.ListView):
@@ -25,5 +28,6 @@ class ProductByCategoryView(generic.ListView):
         context['category'] = self.category
         context['categories'] = self.categories
         return context
+
 
 
