@@ -30,4 +30,9 @@ class ProductByCategoryView(generic.ListView):
         return context
 
 
+class ProductDetailView(generic.DetailView):
+    model = Product
+    template_name = 'catalog/product.html'
+
+
 

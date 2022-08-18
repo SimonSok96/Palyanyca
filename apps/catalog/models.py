@@ -1,6 +1,7 @@
+from django.contrib.admin import display
 from django.db import models
 from django.utils.safestring import mark_safe
-from imagekit.models import ProcessedImageField
+from imagekit.models import ProcessedImageField, ImageSpecField
 from mptt.models import MPTTModel, TreeForeignKey
 from pilkit.processors import ResizeToFill
 from django.urls import reverse
@@ -58,6 +59,44 @@ class Category(MPTTModel):
     def get_absolute_url(self):
         return reverse('category', args=[self.slug])
 
+
+class Image(models.Model):
+    image = ProcessedImageField(
+        verbose_name='Изображение',
+        upload_to='catalog/product',
+        processors=[],
+        format='JPEG',
+        options={'quality': 100},
+        null=True
+    )
+    image_thumbnail = ImageSpecField(
+        source='image',
+        processors=[ResizeToFill(600, 400)],
+        format='JPEG',
+        options={'quality': 100}
+    )
+    product = models.ForeignKey(to='Product', verbose_name='Товор', on_delete=models.CASCADE)
+    is_main = models.BooleanField(verbose_name='Основное изображене', default=False)
+
+    @display(description='Текущее изображение')
+    def image_teg_thumbnail(self):
+        if self.image:
+            if not self.image_thumbnail:
+                Image.objects.get(id=self.id)
+            return mark_safe(f"<img src='/{MEDIA_ROOT}{self.image_thumbnail}' width='70'>")
+
+    @display(description='Текущее изображение')
+    def image_teg(self):
+        if self.image:
+            if not self.image_thumbnail:
+                Image.objects.get(id=self.id)
+            return mark_safe(f"<img src='/{MEDIA_ROOT}{self.image_thumbnail}'>")
+
+    def __str__(self):
+        return ''
+
+
+
 class Product(models.Model):
     name = models.CharField(verbose_name='Название', max_length=255)
     description = models.TextField(verbose_name='Описание', blank=True, null=True)
@@ -73,9 +112,25 @@ class Product(models.Model):
         blank=True,
     )
 
+    def images(self):
+        return Image.objects.filter(product=self.id)
+
+    def main_image(self):
+        image = Image.objects.filter(is_main=True, product=self.id).first()
+        if image:
+            return image
+        return self.images().first()
+
     class Meta:
+        ordering = ['-created_at']
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('product', kwargs={'pk': self.id})
 
 
 
