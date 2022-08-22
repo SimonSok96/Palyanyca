@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+    {% block meta_tegs %}
+    {% include '_meta_tegs.html' with meta_title='Каталог' %}
+{% endblock %}
     <h1>Категории</h1>
     <div class="row">
         {% for category in object_list %}

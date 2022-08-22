@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'mptt',
 
+    'apps.main',
     'apps.blog',
     'apps.user',
     'apps.catalog',
