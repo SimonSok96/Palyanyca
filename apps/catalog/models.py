@@ -122,6 +122,12 @@ class Product(MetaTegMixin):
             return image
         return self.images().first()
 
+    def main_category(self):
+        category = self.categories.filter(categories__productcategory__is_main=True).first()
+        if category:
+            return category
+        return self.categories.first()
+
     class Meta:
         ordering = ['-created_at']
         verbose_name = 'Товар'
