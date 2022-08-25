@@ -1,4 +1,5 @@
 from django.db import models
+from django.views import generic
 
 
 class MetaTegMixin(models.Model):
@@ -14,4 +15,28 @@ class MetaTegMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class ListViewBreadCrumbsMixin(generic.ListView):
+    breadcrumbs = {}
+    
+    def set_breadcrumbs(self):
+        return self.breadcrumbs
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumbs'] = self.set_breadcrumbs()
+        return context
+
+
+class DetailViewBreadCrumbsMixin(generic.DetailView):
+    breadcrumbs = {}
+
+    def set_breadcrumbs(self):
+        return self.breadcrumbs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumbs'] = self.set_breadcrumbs()
+        return context
 
