@@ -1,14 +1,17 @@
 from django.shortcuts import render
-from apps.blog.models import BlogCategory, Article
+from apps.blog.models import BlogCategory, Article, Teg
+from config.settings import PAGE_NAMES
 
 
 def blog_category_list(request):
     blog_categories = BlogCategory.objects.all()
+    #breadcrumds = {'current': PAGE_NAMES['blog']}
     return render(request, 'blog/category/list.html', {'categories': blog_categories})
 
 
 def article_list(request, category_id):
     articles = Article.objects.filter(category=category_id)
+    #breadcrumds = {reverse('blog_category_list'): PAGE_NAMES['blog'], 'current': category.name}
     return render(request, 'blog/article/list.html', {'articles': articles})
 
 
