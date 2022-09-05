@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'mptt',
+    'mathfilters',
 
     'apps.main',
     'apps.blog',
     'apps.user',
     'apps.catalog',
+    'apps.order',
 ]
 
 MIDDLEWARE = [
