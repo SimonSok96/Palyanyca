@@ -13,7 +13,7 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'image', 'first_name', 'last_name', 'email', 'phone', 'password']
+        fields = ['username', 'image', 'first_name', 'last_name', 'email', 'phone', 'password', 'about']
 
     def clean_password_confirm(self):
         cleaned_data = self.cleaned_data
