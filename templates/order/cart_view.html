@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+
+{% block meta_tegs %}
+    {% include '_meta_tegs.html' with meta_title='Корзина' %}
+{% endblock %}
+
+
+{% block content %}
+    <h3 class="my-header">Корзина!</h3>
+    {% include 'order/_cart.html' %}
+{% endblock %}
