@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions, viewsets
 from apps.catalog.models import Product, Category, Image
-from apps.api.catalog.serializers import ProductReadSerializers, ProductWriteSerializers, ImageSerializer
+from apps.api.catalog.serializers import ProductReadSerializers, ProductWriteSerializers, ImageSerializer, \
+    CategorySerializer
 
 
 class ProductListView(generics.ListAPIView):
@@ -34,6 +35,12 @@ class ImageViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     serializer_class = ImageSerializer
     queryset = Image.objects.all()
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
 
 
 
