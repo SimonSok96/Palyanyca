@@ -7,6 +7,7 @@ from pilkit.processors import ResizeToFill
 from django.urls import reverse
 
 from apps.main.mixins import MetaTegMixin
+from apps.user.models import User
 from config.settings import MEDIA_ROOT
 
 
@@ -112,6 +113,8 @@ class Product(MetaTegMixin):
         related_name='categories',
         blank=True,
     )
+    user = models.ForeignKey(User, verbose_name='Владелец', blank=True, null=True, on_delete=models.CASCADE)
+    is_checked = models.BooleanField(verbose_name='Проверен', default=False)
 
     def images(self):
         return Image.objects.filter(product=self.id)
