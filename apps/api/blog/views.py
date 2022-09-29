@@ -1,15 +1,36 @@
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, status
+from rest_framework.response import Response
 
-from apps.api.blog.serializers import ArticleSerializer
-from apps.blog.models import Article
+from apps.api.blog.serializers import ArticleReadSerializer, ArticleWriteSerializer
+from apps.blog.models import Article, Teg
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
-    serializer_class = ArticleSerializer
+    serializer_class = ArticleReadSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def get_serializer_class(self):
+        if self.action in ['create', 'update']:
+            return ArticleWriteSerializer
+        return self.serializer_class
+
+    @staticmethod
+    def chack_tags(tags):
+        tegs_list = []
+        for item in tags:
+            teg = Teg.objects.filter(name=item).first()
+            if not teg:
+                teg = Teg.objects.create(name=item)
+            tegs_list.append(teg)
+        return tegs_list
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        tegs = serializer.validated_data.get('tegs')
+        article = serializer.save(user=self.request.user, tegs=self.chack_tags(tegs))
+        read_serializer = self.serializer_class(article, context={'request': request})
+        return Response(read_serializer.data, status=status.HTTP_201_CREATED)
 
     def get_queryset(self):
         queryset = Article.objects.all()
