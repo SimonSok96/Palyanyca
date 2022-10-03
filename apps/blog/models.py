@@ -5,10 +5,11 @@ from pilkit.processors import ResizeToFill
 
 from apps.user.models import User
 from config.settings import MEDIA_ROOT
+from tinymce.models import HTMLField
 
 
 class BlogCategory(models.Model):
-    name = models.CharField(verbose_name= 'Название', max_length= 255)
+    name = models.CharField(verbose_name='Название', max_length= 255)
     # image = models.ImageField(verbose_name='Зображення', upload_to='blog/category/', null=True)
     image = ProcessedImageField(
         verbose_name='Изображение',
@@ -26,14 +27,12 @@ class BlogCategory(models.Model):
     image_teg_thumbnail.short_description = 'Текущее изображение'
     image_teg_thumbnail.allow_tags = True
 
-
     def image_teg(self):
         if self.image:
             return mark_safe(f"<img src='/{MEDIA_ROOT}{self.image}'>")
 
     image_teg.short_description = 'Текущее изображение'
     image_teg.allow_tags = True
-
 
     def __str__(self):
         return self.name
@@ -56,10 +55,10 @@ class Teg(models.Model):
 
 class Article(models.Model):
     category = models.ForeignKey(
-        to= BlogCategory,
-        verbose_name= 'Категория',
-        on_delete= models.SET_NULL,
-        null= True,
+        to=BlogCategory,
+        verbose_name='Категория',
+        on_delete=models.SET_NULL,
+        null=True,
     )
     user = models.ForeignKey(
         to=User,
@@ -82,12 +81,11 @@ class Article(models.Model):
         format='JPEG',
         options={'quality': 100}
     )
-    title = models.CharField(verbose_name= 'Заголовок', max_length=255)
-    text_preview = models.TextField(verbose_name= 'Текст-превью')
-    text = models.TextField(verbose_name= 'Текст')
-    created_at = models.DateTimeField(verbose_name= 'Дата создания', auto_now_add= True)
-    updated_at = models.DateTimeField(verbose_name= 'Дата редактирования', auto_now_add= True)
-
+    title = models.CharField(verbose_name='Заголовок', max_length=255)
+    text_preview = models.TextField(verbose_name='Текст-превью')
+    text = HTMLField(verbose_name='Текст')
+    created_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name='Дата редактирования', auto_now_add=True)
 
     def image_teg_thumbnail(self):
         if self.image:
@@ -98,7 +96,6 @@ class Article(models.Model):
     image_teg_thumbnail.short_description = 'Текущее изображение'
     image_teg_thumbnail.allow_tags = True
 
-
     def image_teg(self):
         if self.image:
             if not self.image_thumbnail:
@@ -107,7 +104,6 @@ class Article(models.Model):
 
     image_teg.short_description = 'Текущее изображение'
     image_teg.allow_tags = True
-
 
     def __str__(self):
         return self.title
