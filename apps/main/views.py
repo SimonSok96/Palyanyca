@@ -1,12 +1,16 @@
+from apps.main.mixins import DetailViewBreadCrumbsMixin
+from apps.main.models import Page, ProductSet
 from django.shortcuts import render
 
-from apps.main.mixins import DetailViewBreadCrumbsMixin
-from apps.main.models import Page
+
+def home(request):
+    product_sets = ProductSet.objects.filter(is_active=True)
+    return render(request, 'index.html', {'product_sets': product_sets})
 
 
 class PageView(DetailViewBreadCrumbsMixin):
     model = Page
-    template_name =  'main/page.html'
+    template_name = 'main/page.html'
 
     def get_queryset(self):
         queryset = Page.objects.filter(is_active=True)
