@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Приведствую тебя на главной странице</h1>
+    {{ SETTINGS.main_text|safe }}
     {% for product_set in product_sets %}
         {% include 'main/_product_set.html'%}
     {% endfor %}
