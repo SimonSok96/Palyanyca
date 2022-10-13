@@ -111,3 +111,20 @@ class Article(models.Model):
     class Meta:
         verbose_name = 'Статья'
         verbose_name_plural = 'Cтатьи'
+
+
+class Comment(models.Model):
+    article = models.ForeignKey(to=Article, on_delete=models.CASCADE, verbose_name='Статья')
+    user = models.ForeignKey(to=User, verbose_name='Автор', on_delete=models.SET_NULL, null=True, blank=True)
+    name = models.CharField(verbose_name='Название', max_length=255)
+    email = models.EmailField(verbose_name='E-mail')
+    text = models.TextField(verbose_name='Коментарий')
+    is_checked = models.BooleanField(verbose_name='Проверен', default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Статья'
+        verbose_name_plural = 'Cтатьи'
