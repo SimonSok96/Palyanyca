@@ -1,5 +1,7 @@
+
+
 from django.contrib import admin
-from apps.blog.models import Article, BlogCategory, Teg
+from apps.blog.models import Article, BlogCategory, Teg, Comment
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.http import urlencode
@@ -40,3 +42,12 @@ class ArticleAdmin(admin.ModelAdmin):
             return format_html(f"<a href='{url}'>{obj.category.name}</a>")
 
     category_link.short_description = 'Категогия'
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'is_checked']
+    list_display_links = ['id', 'name']
+
+    def has_add_permission(self, request):
+        return False
